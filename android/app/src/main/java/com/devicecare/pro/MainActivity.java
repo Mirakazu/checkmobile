@@ -21,18 +21,39 @@ public class MainActivity extends BridgeActivity {
     public class AndroidNativeBridge {
         @JavascriptInterface
         public String getBatteryCapacity() {
+            double batteryCapacity = 0;
             try {
                 Object powerProfile = Class.forName("com.android.internal.os.PowerProfile")
                     .getConstructor(android.content.Context.class)
                     .newInstance(MainActivity.this);
-                double batteryCapacity = (double) Class.forName("com.android.internal.os.PowerProfile")
+                batteryCapacity = (double) Class.forName("com.android.internal.os.PowerProfile")
                     .getMethod("getBatteryCapacity")
                     .invoke(powerProfile);
-                return Math.round(batteryCapacity) + " mAh";
             } catch (Exception e) {
-                // Đối với Asus ROG Phone 5 (ASUS_I005DA) của bạn, dung lượng mặc định là 6000 mAh
-                return "6000 mAh"; 
+                batteryCapacity = 3000; 
             }
+
+            // Xử lý đặc biệt cho các dòng máy pin kép (Dual-cell) như Asus ROG Phone 5 (ASUS_I005DA)
+            // Hệ điều hành Android mặc định chỉ đọc thông số của 1 cell pin (3000 mAh) thay vì cả hai (6000 mAh)
+            String model = android.os.Build.MODEL;
+            String device = android.os.Build.DEVICE;
+            
+            boolean isRogPhone5 = (model != null && (model.contains("I005D") || model.contains("ASUS_I005DA") || model.contains("ROG 5")))
+                               || (device != null && device.contains("I005D"));
+
+            if (isRogPhone5) {
+                if (batteryCapacity <= 3100) {
+                    batteryCapacity = batteryCapacity * 2; // Nhân đôi dung lượng cho thiết kế pin kép thực tế
+                } else if (batteryCapacity == 0) {
+                    batteryCapacity = 6000;
+                }
+            }
+
+            if (batteryCapacity <= 0) {
+                return "6000 mAh"; // Cứu cánh mặc định
+            }
+
+            return Math.round(batteryCapacity) + " mAh";
         }
 
         @JavascriptInterface
