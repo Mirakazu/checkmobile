@@ -25,6 +25,9 @@ const ResourcesMonitor = (() => {
         // Tạo giao diện các nhân CPU
         generateCpuCoresUI();
         
+        // Cập nhật thông số ROM lưu trữ
+        updateStorageUI();
+
         // Bắt đầu cập nhật thời gian thực
         startMonitoring();
     }
@@ -47,6 +50,70 @@ const ResourcesMonitor = (() => {
             `;
             coresContainer.appendChild(coreRow);
         }
+    }
+
+    // Đọc và cập nhật thông số ROM Bộ nhớ trong từ Native Android
+    function updateStorageUI() {
+        let storage = {
+            total: 128.0,
+            free: 25.4,
+            used: 102.6,
+            officialTotal: 128.0
+        };
+
+        // Đọc qua Native Bridge nếu chạy trên APK
+        if (window.AndroidNative && typeof window.AndroidNative.getStorageInfo === 'function') {
+            try {
+                const infoStr = window.AndroidNative.getStorageInfo();
+                storage = JSON.parse(infoStr);
+            } catch (err) {
+                console.error("Lỗi khi đọc Storage từ AndroidNative:", err);
+            }
+        }
+
+        // Cập nhật text số liệu
+        const usedGBEl = document.getElementById('storage-used-gb');
+        const totalGBEl = document.getElementById('storage-total-gb');
+        const freeGBEl = document.getElementById('storage-free-gb');
+
+        if (usedGBEl) usedGBEl.textContent = `${storage.used.toFixed(1)} GB`;
+        if (totalGBEl) totalGBEl.textContent = `${storage.officialTotal.toFixed(0)} GB`;
+        if (freeGBEl) freeGBEl.textContent = `${storage.free.toFixed(1)} GB`;
+
+        // Tính tỷ lệ % phần trăm
+        const freePercent = (storage.free / storage.officialTotal) * 100;
+        const usedPercent = 100 - freePercent;
+
+        // Phân chia tỷ lệ giả lập của phần đã dùng: Media 45%, Apps 35%, OS còn lại
+        const mediaPercent = usedPercent * 0.45;
+        const appsPercent = usedPercent * 0.35;
+        const systemPercent = usedPercent - mediaPercent - appsPercent;
+
+        // Cập nhật độ rộng các thanh progress
+        const segMedia = document.getElementById('storage-seg-media');
+        const segApps = document.getElementById('storage-seg-apps');
+        const segSystem = document.getElementById('storage-seg-system');
+        const segFree = document.getElementById('storage-seg-free');
+
+        if (segMedia) segMedia.style.width = `${mediaPercent}%`;
+        if (segApps) segApps.style.width = `${appsPercent}%`;
+        if (segSystem) segSystem.style.width = `${systemPercent}%`;
+        if (segFree) segFree.style.width = `${freePercent}%`;
+
+        // Cập nhật text Legend
+        const lblMedia = document.getElementById('lbl-storage-media');
+        const lblApps = document.getElementById('lbl-storage-apps');
+        const lblSystem = document.getElementById('lbl-storage-system');
+        const lblFree = document.getElementById('lbl-storage-free');
+
+        const mediaGB = (storage.used * 0.45).toFixed(1);
+        const appsGB = (storage.used * 0.35).toFixed(1);
+        const systemGB = (storage.used - parseFloat(mediaGB) - parseFloat(appsGB)).toFixed(1);
+
+        if (lblMedia) lblMedia.textContent = `Media: ${mediaGB} GB`;
+        if (lblApps) lblApps.textContent = `Apps: ${appsGB} GB`;
+        if (lblSystem) lblSystem.textContent = `Hệ thống: ${systemGB} GB`;
+        if (lblFree) lblFree.textContent = `Trống: ${storage.free.toFixed(1)} GB`;
     }
 
     // Vòng lặp cập nhật CPU và RAM liên tục

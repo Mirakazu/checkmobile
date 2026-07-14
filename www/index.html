@@ -169,18 +169,18 @@
                     <div class="card">
                         <h3>Dung lượng Lưu trữ</h3>
                         <div class="storage-progress-bar">
-                            <div class="storage-seg seg-media" style="width: 35%"></div>
-                            <div class="storage-seg seg-apps" style="width: 25%"></div>
-                            <div class="storage-seg seg-system" style="width: 20%"></div>
-                            <div class="storage-seg seg-free" style="width: 20%"></div>
+                            <div class="storage-seg seg-media" id="storage-seg-media" style="width: 35%"></div>
+                            <div class="storage-seg seg-apps" id="storage-seg-apps" style="width: 25%"></div>
+                            <div class="storage-seg seg-system" id="storage-seg-system" style="width: 20%"></div>
+                            <div class="storage-seg seg-free" id="storage-seg-free" style="width: 20%"></div>
                         </div>
                         <div class="storage-legend">
-                            <div class="legend-item"><span class="legend-color media-bg"></span> Media: 45 GB</div>
-                            <div class="legend-item"><span class="legend-color apps-bg"></span> Apps: 32 GB</div>
-                            <div class="legend-item"><span class="legend-color system-bg"></span> OS: 25.6 GB</div>
-                            <div class="legend-item"><span class="legend-color free-bg"></span> Trống: 25.4 GB</div>
+                            <div class="legend-item"><span class="legend-color media-bg"></span> <span id="lbl-storage-media">Media: 45 GB</span></div>
+                            <div class="legend-item"><span class="legend-color apps-bg"></span> <span id="lbl-storage-apps">Apps: 32 GB</span></div>
+                            <div class="legend-item"><span class="legend-color system-bg"></span> <span id="lbl-storage-system">Hệ thống: 25.6 GB</span></div>
+                            <div class="legend-item"><span class="legend-color free-bg"></span> <span id="lbl-storage-free">Trống: 25.4 GB</span></div>
                         </div>
-                        <p class="storage-summary-text">Đã dùng <strong>102.6 GB</strong> trên tổng số <strong>128 GB</strong> (Còn lại <strong>25.4 GB</strong>)</p>
+                        <p class="storage-summary-text" id="storage-summary">Đã dùng <strong id="storage-used-gb">102.6 GB</strong> trên tổng số <strong id="storage-total-gb">128 GB</strong> (Còn lại <strong id="storage-free-gb">25.4 GB</strong>)</p>
                     </div>
 
                     <!-- Detailed Battery Status Card -->
