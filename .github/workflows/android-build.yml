@@ -39,12 +39,18 @@ jobs:
       - name: Sync Capacitor Android
         run: npx cap sync android
 
+      # 5.5 Verify Java Version
+      - name: Verify Java Version
+        run: |
+          java -version
+          echo "JAVA_HOME is $JAVA_HOME"
+
       # 6. Build Android Debug APK
       - name: Build with Gradle
         run: |
           cd android
           chmod +x gradlew
-          ./gradlew assembleDebug
+          ./gradlew assembleDebug -Dorg.gradle.java.home=$JAVA_HOME
 
       # 7. Upload compiled APK to GitHub Artifacts
       - name: Upload APK
