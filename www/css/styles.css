@@ -1,0 +1,1554 @@
+/* ==========================================
+   DeviceCare Pro - Main Design Stylesheet
+   ========================================== */
+
+:root {
+    /* Color Palette */
+    --bg-dark: #0a0f1d;
+    --bg-card: rgba(21, 28, 51, 0.75);
+    --border-color: rgba(255, 255, 255, 0.08);
+    --text-primary: #ffffff;
+    --text-secondary: #9aa5c4;
+    
+    /* Neon Accents */
+    --accent-cyan: #00f0ff;
+    --accent-purple: #bd00ff;
+    --accent-green: #00ff66;
+    --accent-orange: #ff5e00;
+    --accent-red: #ff3b30;
+    --accent-yellow: #ffcc00;
+    
+    /* Gradients */
+    --grad-primary: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    --grad-battery: linear-gradient(180deg, var(--accent-green), #00b347);
+    --grad-battery-charging: linear-gradient(180deg, var(--accent-cyan), var(--accent-green));
+    
+    /* Font */
+    --font-family: 'Outfit', sans-serif;
+    
+    /* Layout */
+    --phone-width: 410px;
+    --phone-height: 840px;
+    --nav-height: 70px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    background-color: #05070f;
+    background-image: 
+        radial-gradient(at 10% 20%, rgba(189, 0, 255, 0.15) 0px, transparent 50%),
+        radial-gradient(at 90% 80%, rgba(0, 240, 255, 0.15) 0px, transparent 50%);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* ==========================================
+   Mobile-First Container & Device Frame
+   ========================================== */
+
+.phone-wrapper {
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+}
+
+.phone-frame {
+    width: var(--phone-width);
+    height: var(--phone-height);
+    background-color: var(--bg-dark);
+    border: 12px solid #1a1e2e;
+    border-radius: 44px;
+    box-shadow: 
+        0 25px 50px -12px rgba(0, 0, 0, 0.7),
+        0 0 40px rgba(189, 0, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Responsive adjustment for desktop/mobile */
+@media (max-width: 500px) {
+    .phone-wrapper {
+        padding: 0;
+    }
+    .phone-frame {
+        width: 100vw;
+        height: 100vh;
+        border: none;
+        border-radius: 0;
+    }
+    .phone-notch {
+        display: none;
+    }
+}
+
+.phone-notch {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 140px;
+    height: 28px;
+    background-color: #1a1e2e;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    z-index: 1000;
+}
+
+/* ==========================================
+   Header and Status Bar
+   ========================================== */
+
+.app-header {
+    background: linear-gradient(180deg, rgba(10, 15, 29, 0.95) 0%, rgba(10, 15, 29, 0.7) 100%);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border-color);
+    padding: 12px 20px 8px 20px;
+    z-index: 100;
+    flex-shrink: 0;
+}
+
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    padding-top: 4px;
+}
+
+.status-bar-icons {
+    display: flex;
+    gap: 6px;
+}
+
+.brand-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--accent-cyan);
+}
+
+.brand-logo h1 {
+    font-size: 20px;
+    font-weight: 800;
+    background: linear-gradient(to right, #00f0ff, #bd00ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.device-badge {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    letter-spacing: 0.5px;
+}
+
+/* ==========================================
+   Navigation Bar (Bottom)
+   ========================================== */
+
+.app-nav {
+    height: var(--nav-height);
+    background: rgba(10, 15, 29, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border-color);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0 10px;
+    z-index: 100;
+    flex-shrink: 0;
+}
+
+.nav-item {
+    background: none;
+    border: none;
+    outline: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+    cursor: pointer;
+    flex-grow: 1;
+    height: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.6;
+}
+
+.nav-item:hover, .nav-item.active {
+    color: var(--accent-cyan);
+    opacity: 1;
+}
+
+.nav-icon {
+    font-size: 20px;
+    margin-bottom: 4px;
+    transition: transform 0.2s ease;
+}
+
+.nav-item.active .nav-icon {
+    transform: scale(1.18);
+    text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 600;
+}
+
+/* ==========================================
+   App Content Area
+   ========================================== */
+
+.app-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 16px;
+    position: relative;
+    scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.app-content::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for Chrome, Safari and Opera */
+}
+
+.tab-view {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.tab-view.active {
+    display: flex;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   Cards and UI Blocks (Glassmorphism)
+   ========================================== */
+
+.card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 24px;
+    padding: 18px;
+    backdrop-filter: blur(16px) saturate(180%);
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.card-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.header-badge {
+    background: rgba(255, 255, 255, 0.08);
+    padding: 4px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.hover-scale {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.hover-scale:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0, 240, 255, 0.08);
+}
+
+/* ==========================================
+   TAB 1: Dashboard UI Components
+   ========================================== */
+
+/* Health Score Gauge */
+.health-container {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: linear-gradient(135deg, rgba(21, 28, 51, 0.8) 0%, rgba(30, 20, 55, 0.8) 100%);
+    border: 1px solid rgba(189, 0, 255, 0.15);
+}
+
+.health-gauge {
+    position: relative;
+    width: 100px;
+    height: 100px;
+}
+
+.gauge-svg {
+    transform: rotate(-90deg);
+}
+
+.gauge-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.05);
+    stroke-width: 8;
+}
+
+.gauge-progress {
+    fill: none;
+    stroke: url(#healthGrad);
+    stroke-width: 8;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Define local SVG gradient dynamically in CSS context if needed (fallback to inline or css property) */
+#health-progress {
+    stroke: var(--accent-cyan);
+    filter: drop-shadow(0 0 6px rgba(0, 240, 255, 0.5));
+}
+
+.gauge-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.gauge-number {
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.gauge-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.health-status {
+    flex-grow: 1;
+}
+
+.health-status h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+}
+
+.health-status p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+}
+
+.stat-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.cpu-color { color: var(--accent-orange); background: rgba(255, 94, 0, 0.1); }
+.ram-color { color: var(--accent-purple); background: rgba(189, 0, 255, 0.1); }
+.battery-color { color: var(--accent-green); background: rgba(0, 255, 102, 0.1); }
+.network-color { color: var(--accent-cyan); background: rgba(0, 240, 255, 0.1); }
+
+.stat-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-title {
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 16px;
+    font-weight: 700;
+    margin-top: 2px;
+}
+
+/* System Info List */
+.info-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.info-list li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    padding-bottom: 8px;
+}
+
+.info-list li:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.info-label {
+    color: var(--text-secondary);
+}
+
+.info-val {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.btn-icon {
+    background: rgba(255, 255, 255, 0.05);
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    transition: background 0.2s;
+}
+
+.btn-icon:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+/* Warning Alerts */
+.warning-alert {
+    background: rgba(255, 94, 0, 0.1);
+    border: 1px solid rgba(255, 94, 0, 0.25);
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.warning-alert.hide {
+    display: none;
+}
+
+.warning-icon {
+    font-size: 20px;
+}
+
+.warning-body h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent-orange);
+}
+
+.warning-body p {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+/* ==========================================
+   TAB 2: Resources UI Components
+   ========================================== */
+
+/* CPU Multi-core load bars */
+.cpu-cores-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.cpu-core-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.core-label {
+    font-size: 12px;
+    font-weight: 600;
+    width: 50px;
+    color: var(--text-secondary);
+}
+
+.core-progress-bar {
+    flex-grow: 1;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.core-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+    border-radius: 5px;
+    width: 0%;
+    transition: width 0.5s ease-out;
+}
+
+.core-value {
+    font-size: 12px;
+    font-weight: 700;
+    width: 35px;
+    text-align: right;
+}
+
+/* RAM Progress */
+.ram-card h3 {
+    margin-bottom: 12px;
+    font-size: 15px;
+}
+
+.ram-details {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 10px;
+}
+
+.radial-progress-wrapper {
+    position: relative;
+    width: 110px;
+    height: 110px;
+}
+
+.radial-svg {
+    transform: rotate(-90deg);
+}
+
+.radial-bg {
+    fill: none;
+    stroke: rgba(255, 255, 255, 0.04);
+    stroke-width: 10;
+}
+
+.radial-bar {
+    fill: none;
+    stroke-width: 10;
+    stroke-linecap: round;
+    transition: stroke-dashoffset 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ram-color-stroke {
+    stroke: var(--accent-purple);
+    filter: drop-shadow(0 0 4px rgba(189, 0, 255, 0.4));
+}
+
+.radial-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.radial-number {
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.radial-label {
+    font-size: 8px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.ram-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ram-stats p {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.color-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.ram-color-bg { background-color: var(--accent-purple); }
+.bg-gray { background-color: #4b5563; }
+
+/* Storage Progress */
+.storage-progress-bar {
+    height: 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    display: flex;
+    overflow: hidden;
+    margin: 12px 0 10px 0;
+}
+
+.storage-seg {
+    height: 100%;
+    transition: width 0.5s ease-out;
+}
+
+.seg-media { background: #0088ff; }
+.seg-apps { background: #ffaa00; }
+.seg-system { background: #8800ff; }
+.seg-free { background: rgba(255, 255, 255, 0.1); }
+
+.storage-legend {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.legend-item {
+    font-size: 11px;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+}
+
+.legend-color {
+    width: 8px;
+    height: 8px;
+    border-radius: 2px;
+    margin-right: 6px;
+}
+
+.media-bg { background-color: #0088ff; }
+.apps-bg { background-color: #ffaa00; }
+.system-bg { background-color: #8800ff; }
+.free-bg { background-color: rgba(255, 255, 255, 0.2); }
+
+.storage-summary-text {
+    font-size: 11px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+/* Battery Visual (Vertical Fluid Battery) */
+.battery-health-badge {
+    background: rgba(0, 255, 102, 0.15);
+    color: var(--accent-green);
+    border: 1px solid rgba(0, 255, 102, 0.2);
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.battery-main-view {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 10px 0;
+}
+
+.battery-visual {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.battery-case {
+    width: 60px;
+    height: 110px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    padding: 3px;
+    position: relative;
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.battery-cap {
+    width: 20px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.3);
+    border-top-left-radius: 4px;
+    border-top-right-radius: 4px;
+    position: absolute;
+    top: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.battery-fill {
+    width: 100%;
+    background: var(--grad-battery);
+    border-radius: 6px;
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    right: 3px;
+    transition: height 0.5s ease-in-out, background 0.5s;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 255, 102, 0.3);
+}
+
+.battery-fill.charging {
+    background: var(--grad-battery-charging);
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+}
+
+.battery-bubbles {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, white 20%, transparent 20%);
+    background-size: 10px 10px;
+    background-repeat: repeat-x;
+    animation: bubbleUp 3s linear infinite;
+    opacity: 0;
+}
+
+.battery-fill.charging .battery-bubbles {
+    opacity: 0.3;
+}
+
+@keyframes bubbleUp {
+    0% {
+        background-position: 0px 100px;
+    }
+    100% {
+        background-position: 10px -10px;
+    }
+}
+
+.battery-percentage {
+    font-size: 18px;
+    font-weight: 800;
+    margin-top: 10px;
+}
+
+.battery-params ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.battery-params li {
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.battery-params span {
+    color: var(--text-secondary);
+}
+
+/* ==========================================
+   TAB 3: Diagnostics List & Grid
+   ========================================== */
+
+.tests-intro {
+    text-align: center;
+    margin-bottom: 6px;
+}
+
+.tests-intro h3 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.tests-intro p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+}
+
+.tests-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.test-btn-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 16px 12px;
+}
+
+.test-icon {
+    font-size: 26px;
+    margin-bottom: 8px;
+}
+
+.test-btn-card h4 {
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.test-desc {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-bottom: 12px;
+    line-height: 1.3;
+    height: 26px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.test-status-badge {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+}
+
+.status-pending {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.status-pass {
+    background: rgba(0, 255, 102, 0.15);
+    color: var(--accent-green);
+    border: 1px solid rgba(0, 255, 102, 0.2);
+}
+
+.status-fail {
+    background: rgba(255, 59, 48, 0.15);
+    color: var(--accent-red);
+    border: 1px solid rgba(255, 59, 48, 0.2);
+}
+
+/* ==========================================
+   TAB 4: Network UI & Speedtest
+   ========================================== */
+
+.network-status-card {
+    border-left: 4px solid var(--accent-cyan);
+}
+
+.net-status-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.connection-state {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.net-status-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.net-status-dot.online {
+    background-color: var(--accent-green);
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.5);
+}
+
+.net-status-dot.offline {
+    background-color: var(--accent-red);
+    box-shadow: 0 0 10px rgba(255, 59, 48, 0.5);
+}
+
+.net-type-badge {
+    background: rgba(0, 240, 255, 0.1);
+    color: var(--accent-cyan);
+    border: 1px solid rgba(0, 240, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.info-list.compact li {
+    padding-bottom: 6px;
+    margin-bottom: 6px;
+}
+
+.select-all {
+    user-select: all;
+    -webkit-user-select: all;
+}
+
+/* Speedometer */
+.speedometer-box {
+    position: relative;
+    width: 100%;
+    height: 130px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    margin-top: 10px;
+}
+
+.speedometer-svg {
+    width: 220px;
+    height: 130px;
+}
+
+.gauge-needle {
+    transform-origin: 100px 110px;
+    transform: rotate(0deg);
+    transition: transform 0.1s linear;
+}
+
+.speedometer-readings {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.speed-value {
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.speed-unit {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+}
+
+.speedtest-results {
+    display: flex;
+    justify-content: space-around;
+    margin: 18px 0;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 12px;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.speed-res-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.res-lbl {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.speed-res-box strong {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.divider-v {
+    width: 1px;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* ==========================================
+   TAB 5: Diagnostic Report Sheet
+   ========================================== */
+
+.report-card-wrapper {
+    background: linear-gradient(135deg, rgba(21, 28, 51, 0.9) 0%, rgba(10, 15, 29, 0.95) 100%);
+    border: 1.5px solid var(--border-color);
+}
+
+.report-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1.5px dashed rgba(255, 255, 255, 0.1);
+    padding-bottom: 14px;
+    margin-bottom: 14px;
+}
+
+.logo-area h2 {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--accent-cyan);
+}
+
+.logo-area p {
+    font-size: 10px;
+    color: var(--text-secondary);
+    margin-top: 2px;
+}
+
+.report-health-circle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    border: 3px solid var(--accent-cyan);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 800;
+    box-shadow: 0 0 12px rgba(0, 240, 255, 0.25);
+}
+
+.report-section {
+    margin-bottom: 16px;
+}
+
+.report-section h4 {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    border-left: 2px solid var(--accent-purple);
+    padding-left: 6px;
+}
+
+.report-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    font-size: 11px;
+}
+
+.report-grid div {
+    background: rgba(255, 255, 255, 0.02);
+    padding: 6px 10px;
+    border-radius: 8px;
+    color: var(--text-secondary);
+}
+
+.report-grid strong {
+    color: var(--text-primary);
+}
+
+.report-tests-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.report-test-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 8px 12px;
+    border-radius: 10px;
+}
+
+.empty-tests-msg {
+    font-size: 11px;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 12px 0;
+}
+
+.report-recommendations {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 12px;
+}
+
+.report-recommendations li {
+    position: relative;
+    padding-left: 14px;
+    line-height: 1.4;
+    color: var(--text-secondary);
+}
+
+.report-recommendations li::before {
+    content: "•";
+    color: var(--accent-cyan);
+    font-size: 16px;
+    position: absolute;
+    left: 2px;
+    top: -2px;
+}
+
+.report-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ==========================================
+   Buttons and Controls
+   ========================================== */
+
+.btn {
+    padding: 14px 20px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-full {
+    width: 100%;
+}
+
+.btn-primary {
+    background: var(--grad-primary);
+    color: white;
+    box-shadow: 0 4px 15px rgba(189, 0, 255, 0.2);
+}
+
+.btn-primary:hover {
+    box-shadow: 0 6px 20px rgba(0, 240, 255, 0.4);
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #ff3b30, #b5150d);
+    color: white;
+}
+
+.btn-danger:hover {
+    box-shadow: 0 4px 15px rgba(255, 59, 48, 0.3);
+}
+
+/* ==========================================
+   Popup Modal Overlay Styles
+   ========================================== */
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(6, 9, 20, 0.95);
+    z-index: 1000;
+    display: none;
+    flex-direction: column;
+    animation: fadeIn 0.2s ease forwards;
+}
+
+.overlay.flex-center {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.overlay-close-btn {
+    position: absolute;
+    top: 40px;
+    left: 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
+    padding: 6px 12px;
+    border-radius: 12px;
+    font-weight: 600;
+    z-index: 1001;
+}
+
+.overlay-close-btn.top-right {
+    left: auto;
+    right: 20px;
+}
+
+/* Screen Test overlay specifics */
+#screen-test-overlay {
+    cursor: pointer;
+}
+
+.screen-test-content {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+}
+
+.test-instruction {
+    font-size: 13px;
+    text-align: center;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 10px 18px;
+    border-radius: 20px;
+    max-width: 80%;
+    pointer-events: none;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Touch Test Canvas */
+.touch-test-instruction {
+    position: absolute;
+    top: 75px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
+    font-size: 11px;
+    color: var(--text-secondary);
+    background: rgba(0, 0, 0, 0.7);
+    padding: 6px 14px;
+    border-radius: 12px;
+    pointer-events: none;
+    width: 80%;
+    text-align: center;
+}
+
+#touch-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Dialog Modals inside Overlays */
+.modal-card {
+    background: #11182c;
+    border: 1px solid var(--border-color);
+    border-radius: 32px;
+    width: 100%;
+    max-width: 350px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    animation: scaleUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.modal-card.wide-card {
+    max-width: 380px;
+}
+
+@keyframes scaleUp {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-card h3 {
+    font-size: 17px;
+    text-align: center;
+}
+
+.modal-card p {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: center;
+    line-height: 1.4;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.modal-actions button {
+    flex-grow: 1;
+    font-size: 12px;
+    padding: 12px;
+}
+
+/* Audio Test buttons */
+.audio-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.btn-audio-test {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    color: white;
+    padding: 12px;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-audio-test:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.audio-status {
+    text-align: center;
+    font-size: 12px;
+    color: var(--accent-cyan);
+    font-weight: 600;
+}
+
+/* Camera Preview */
+.camera-preview-container {
+    width: 100%;
+    height: 200px;
+    background: black;
+    border-radius: 18px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#camera-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.camera-fallback {
+    position: absolute;
+    color: var(--text-secondary);
+    font-size: 12px;
+    text-align: center;
+    padding: 20px;
+    display: none;
+}
+
+.camera-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.camera-actions button {
+    font-size: 11px;
+    padding: 8px 16px;
+    border-radius: 10px;
+}
+
+/* Sensor Ball/Level Test */
+.sensor-bubble-container {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    border: 3px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    margin: 10px auto;
+    background: rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.target-circle {
+    width: 32px;
+    height: 32px;
+    border: 2px dashed var(--accent-cyan);
+    border-radius: 50%;
+}
+
+.sensor-bubble {
+    width: 20px;
+    height: 20px;
+    background: radial-gradient(circle at 30% 30%, #00f0ff, #0084ff);
+    border-radius: 50%;
+    position: absolute;
+    top: 55px; /* Center is: container size/2 - bubble size/2 = 65 - 10 = 55 */
+    left: 55px;
+    box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+    transition: top 0.05s linear, left 0.05s linear;
+}
+
+.sensor-data-readout {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    font-size: 11px;
+    text-align: center;
+    color: var(--text-secondary);
+}
+
+.sensor-data-readout span {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.sensor-fallback-warning {
+    font-size: 10px;
+    color: var(--accent-orange);
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* Decibel Meter for Mic Test */
+.decibel-meter {
+    height: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.decibel-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-green), var(--accent-yellow), var(--accent-red));
+    border-radius: 8px;
+    transition: width 0.1s ease;
+}
+
+.decibel-val {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
+}
+
+.mic-visualizer-container {
+    height: 80px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+#mic-visualizer {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* General classes */
+.hide { display: none !important; }
+.text-red { color: var(--accent-red); }
+.text-cyan { color: var(--accent-cyan); }
+.text-purple { color: var(--accent-purple); }
+.text-green { color: var(--accent-green); }
+.text-orange { color: var(--accent-orange); }
+.text-yellow { color: var(--accent-yellow); }
+
+.icon-pulse {
+    animation: iconPulse 2s infinite ease-in-out;
+}
+
+@keyframes iconPulse {
+    0%, 100% {
+        transform: scale(1);
+        filter: drop-shadow(0 0 0 rgba(0, 240, 255, 0));
+    }
+    50% {
+        transform: scale(1.08);
+        filter: drop-shadow(0 0 5px rgba(0, 240, 255, 0.5));
+    }
+}

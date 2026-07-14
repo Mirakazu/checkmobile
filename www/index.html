@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DeviceCare Pro - Báo cáo Tình trạng Máy</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- App Container simulating a mobile device on desktop -->
+    <div class="phone-wrapper">
+        <div class="phone-frame">
+            <!-- Notch/Dynamic Island for realistic look -->
+            <div class="phone-notch"></div>
+            
+            <!-- App Header -->
+            <header class="app-header">
+                <div class="status-bar">
+                    <span id="current-time">12:00</span>
+                    <div class="status-bar-icons">
+                        <span id="header-signal">📶</span>
+                        <span id="header-wifi">📶</span>
+                        <span id="header-battery">100% 🔋</span>
+                    </div>
+                </div>
+                <div class="brand-bar">
+                    <div class="brand-logo">
+                        <svg class="icon-pulse" viewBox="0 0 24 24" width="24" height="24">
+                            <path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-2 10h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/>
+                        </svg>
+                        <h1>DeviceCare Pro</h1>
+                    </div>
+                    <div class="device-badge" id="device-model-badge">Phát hiện...</div>
+                </div>
+            </header>
+
+            <!-- Main Content Area -->
+            <main class="app-content" id="main-content">
+                
+                <!-- TAB 1: TỔNG QUAN (DASHBOARD) -->
+                <section id="tab-dashboard" class="tab-view active">
+                    <!-- Health Score Gauge -->
+                    <div class="health-container card">
+                        <div class="health-gauge">
+                            <svg viewBox="0 0 100 100" class="gauge-svg">
+                                <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
+                                <circle class="gauge-progress" id="health-progress" cx="50" cy="50" r="45" stroke-dasharray="283" stroke-dashoffset="283"></circle>
+                            </svg>
+                            <div class="gauge-text">
+                                <span class="gauge-number" id="health-score">--</span>
+                                <span class="gauge-label">Sức khỏe</span>
+                            </div>
+                        </div>
+                        <div class="health-status">
+                            <h3 id="health-status-text">Đang phân tích...</h3>
+                            <p id="health-status-desc">Hãy hoàn thành các bài test phần cứng để có kết quả chính xác nhất.</p>
+                        </div>
+                    </div>
+
+                    <!-- Grid Stats -->
+                    <div class="stats-grid">
+                        <div class="stat-card card hover-scale" onclick="switchTab('resources')">
+                            <div class="stat-icon cpu-color">
+                                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M17 9H7v6h10V9zm-8 4v-2h6v2H9zm8-10h-2V1h-2v2h-2V1H9v2H7V1H5v2c-1.1 0-2 .9-2 2v2H1v2h2v2H1v2h2v2H1v2h2v2c0 1.1.9 2 2 2v2h2v-2h2v2h2v-2h2v2h2v-2h2c1.1 0 2-.9 2-2v-2h2v-2h-2v-2h2v-2h-2v-2h2V9h-2V7c0-1.1-.9-2-2-2V3zm0 14H5V5h12v12z"/></svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-title">Nhiệt độ CPU</span>
+                                <span class="stat-value" id="dash-cpu-temp">--°C</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card card hover-scale" onclick="switchTab('resources')">
+                            <div class="stat-icon ram-color">
+                                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M19 15c-1.1 0-2-.9-2-2V9c0-1.1.9-2 2-2V5h-2c0-1.1-.9-2-2-2h-2c0-1.1-.9-2-2-2V1H9v2c-1.1 0-2 .9-2 2H5c0-1.1-.9-2-2-2v2h14v10H5v2h14v-2zM9 7h6v2H9V7zm0 4h6v2H9v-2z"/></svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-title">RAM đã dùng</span>
+                                <span class="stat-value" id="dash-ram-usage">--%</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card card hover-scale" onclick="switchTab('resources')">
+                            <div class="stat-icon battery-color" id="dash-battery-icon-wrapper">
+                                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M16 20H8V6h8v14zm.5-16.5h-2v-1h-5v1h-2C6.67 3.5 6 4.17 6 5v16c0 .83.67 1.5 1.5 1.5h9c.83 0 1.5-.67 1.5-1.5V5c0-.83-.67-1.5-1.5-1.5z"/></svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-title">Dung lượng Pin</span>
+                                <span class="stat-value" id="dash-battery-level">--%</span>
+                            </div>
+                        </div>
+
+                        <div class="stat-card card hover-scale" onclick="switchTab('network')">
+                            <div class="stat-icon network-color">
+                                <svg viewBox="0 0 24 24" width="24" height="24"><path fill="currentColor" d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-1.46-1.99-2.35-4.43-2.35-7.07 0-6.63 5.37-12 12-12s12 5.37 12 12c0 2.63-.88 5.07-2.33 7.06l-1.62-1.8C20.26 16.07 21 14.12 21 12c0-4.97-4.03-9-9-9zm0 6c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3zm0 4c-.55 0-1-.45-1-1s.45-1 1-1 1 .45 1 1-.45 1-1 1z"/></svg>
+                            </div>
+                            <div class="stat-info">
+                                <span class="stat-title">Tốc độ mạng</span>
+                                <span class="stat-value" id="dash-net-speed">-- Mbps</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Info Card -->
+                    <div class="card sys-info-card">
+                        <div class="card-header">
+                            <h3>Thông tin thiết bị</h3>
+                            <button class="btn-icon" id="btn-refresh-sys" title="Tải lại">🔄</button>
+                        </div>
+                        <ul class="info-list">
+                            <li><span class="info-label">Tên thiết bị:</span> <span class="info-val" id="sys-name">Đang xác định...</span></li>
+                            <li><span class="info-label">Hệ điều hành:</span> <span class="info-val" id="sys-os">Đang xác định...</span></li>
+                            <li><span class="info-label">Trình duyệt:</span> <span class="info-val" id="sys-browser">Đang xác định...</span></li>
+                            <li><span class="info-label">Độ phân giải:</span> <span class="info-val" id="sys-screen">1920 x 1080</span></li>
+                            <li><span class="info-label">Thời gian hoạt động:</span> <span class="info-val" id="sys-uptime">00:00:00</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Active Warnings / Alert -->
+                    <div class="warning-alert hide" id="dashboard-alert">
+                        <div class="warning-icon">⚠️</div>
+                        <div class="warning-body">
+                            <h4>Phát hiện vấn đề hiệu năng</h4>
+                            <p id="dashboard-alert-text">Bộ nhớ RAM đang sử dụng trên 85%. Hãy dọn dẹp các tab trình duyệt không dùng.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: TÀI NGUYÊN (RESOURCES) -->
+                <section id="tab-resources" class="tab-view">
+                    <!-- CPU Core Activity -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>Hiệu năng CPU</h3>
+                            <span class="header-badge" id="cpu-total-load">Tải: 0%</span>
+                        </div>
+                        <div class="cpu-cores-container" id="cpu-cores">
+                            <!-- Dynamically generated cores -->
+                        </div>
+                    </div>
+
+                    <!-- RAM Section -->
+                    <div class="card ram-card">
+                        <h3>Dung lượng RAM</h3>
+                        <div class="ram-details">
+                            <div class="radial-progress-wrapper">
+                                <svg viewBox="0 0 100 100" class="radial-svg">
+                                    <circle class="radial-bg" cx="50" cy="50" r="40"></circle>
+                                    <circle class="radial-bar ram-color-stroke" id="ram-progress" cx="50" cy="50" r="40" stroke-dasharray="251.2" stroke-dashoffset="251.2"></circle>
+                                </svg>
+                                <div class="radial-text">
+                                    <span class="radial-number" id="ram-percent">--%</span>
+                                    <span class="radial-label">Đã dùng</span>
+                                </div>
+                            </div>
+                            <div class="ram-stats">
+                                <p><span class="color-dot ram-color-bg"></span> Đã dùng: <strong id="ram-used">0.0 GB</strong></p>
+                                <p><span class="color-dot bg-gray"></span> Còn trống: <strong id="ram-free">0.0 GB</strong></p>
+                                <p>Tổng RAM vật lý: <strong id="ram-total">0.0 GB</strong></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Storage Section -->
+                    <div class="card">
+                        <h3>Dung lượng Lưu trữ</h3>
+                        <div class="storage-progress-bar">
+                            <div class="storage-seg seg-media" style="width: 35%"></div>
+                            <div class="storage-seg seg-apps" style="width: 25%"></div>
+                            <div class="storage-seg seg-system" style="width: 20%"></div>
+                            <div class="storage-seg seg-free" style="width: 20%"></div>
+                        </div>
+                        <div class="storage-legend">
+                            <div class="legend-item"><span class="legend-color media-bg"></span> Media: 45 GB</div>
+                            <div class="legend-item"><span class="legend-color apps-bg"></span> Apps: 32 GB</div>
+                            <div class="legend-item"><span class="legend-color system-bg"></span> OS: 25.6 GB</div>
+                            <div class="legend-item"><span class="legend-color free-bg"></span> Trống: 25.4 GB</div>
+                        </div>
+                        <p class="storage-summary-text">Đã dùng <strong>102.6 GB</strong> trên tổng số <strong>128 GB</strong> (Còn lại <strong>25.4 GB</strong>)</p>
+                    </div>
+
+                    <!-- Detailed Battery Status Card -->
+                    <div class="card battery-detail-card">
+                        <div class="card-header">
+                            <h3>Chẩn đoán Pin</h3>
+                            <span class="battery-health-badge" id="battery-health">Hoàn hảo</span>
+                        </div>
+                        <div class="battery-main-view">
+                            <div class="battery-visual">
+                                <div class="battery-case">
+                                    <div class="battery-cap"></div>
+                                    <div class="battery-fill" id="battery-fill-level" style="height: 50%;">
+                                        <div class="battery-bubbles" id="battery-bubbles"></div>
+                                    </div>
+                                </div>
+                                <span class="battery-percentage" id="battery-level-detail">50%</span>
+                            </div>
+                            <div class="battery-params">
+                                <ul>
+                                    <li><span>Trạng thái:</span> <strong id="battery-status">Đang xả pin</strong></li>
+                                    <li><span>Nhiệt độ:</span> <strong id="battery-temp">32.5 °C</strong></li>
+                                    <li><span>Điện áp:</span> <strong id="battery-voltage">3.85 V</strong></li>
+                                    <li><span>Công nghệ:</span> <strong>Li-Po</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: CHẨN ĐOÁN PHẦN CỨNG (DIAGNOSTICS) -->
+                <section id="tab-diagnostics" class="tab-view">
+                    <div class="tests-intro">
+                        <h3>Kiểm tra phần cứng</h3>
+                        <p>Nhấp vào từng chức năng để thực hiện các bài test chẩn đoán phần cứng.</p>
+                    </div>
+
+                    <div class="tests-grid">
+                        <div class="test-btn-card card hover-scale" id="test-screen" onclick="startScreenTest()">
+                            <div class="test-icon text-red">📺</div>
+                            <h4>Màn hình</h4>
+                            <p class="test-desc">Tìm điểm chết màn hình</p>
+                            <span class="test-status-badge status-pending" id="status-screen">Chưa test</span>
+                        </div>
+
+                        <div class="test-btn-card card hover-scale" id="test-touch" onclick="startTouchTest()">
+                            <div class="test-icon text-cyan">👆</div>
+                            <h4>Cảm ứng</h4>
+                            <p class="test-desc">Kiểm tra vùng liệt cảm ứng</p>
+                            <span class="test-status-badge status-pending" id="status-touch">Chưa test</span>
+                        </div>
+
+                        <div class="test-btn-card card hover-scale" id="test-audio" onclick="startAudioTest()">
+                            <div class="test-icon text-purple">🔊</div>
+                            <h4>Loa & Âm thanh</h4>
+                            <p class="test-desc">Loa Trái / Phải & Âm tần</p>
+                            <span class="test-status-badge status-pending" id="status-audio">Chưa test</span>
+                        </div>
+
+                        <div class="test-btn-card card hover-scale" id="test-mic" onclick="startMicrophoneTest()">
+                            <div class="test-icon text-green">🎙️</div>
+                            <h4>Microphone</h4>
+                            <p class="test-desc">Đo cường độ tiếng ồn</p>
+                            <span class="test-status-badge status-pending" id="status-mic">Chưa test</span>
+                        </div>
+
+                        <div class="test-btn-card card hover-scale" id="test-sensors" onclick="startSensorsTest()">
+                            <div class="test-icon text-orange">🧭</div>
+                            <h4>Cảm biến</h4>
+                            <p class="test-desc">Gia tốc kế & Con quay hồi chuyển</p>
+                            <span class="test-status-badge status-pending" id="status-sensors">Chưa test</span>
+                        </div>
+
+                        <div class="test-btn-card card hover-scale" id="test-camera" onclick="startCameraTest()">
+                            <div class="test-icon text-yellow">📷</div>
+                            <h4>Máy ảnh</h4>
+                            <p class="test-desc">Camera trước / Camera sau</p>
+                            <span class="test-status-badge status-pending" id="status-camera">Chưa test</span>
+                        </div>
+                    </div>
+
+                    <!-- Reset Tests -->
+                    <button class="btn btn-secondary btn-full" onclick="resetAllTests()">Đặt lại toàn bộ bài test</button>
+                </section>
+
+                <!-- TAB 4: MẠNG (NETWORK) -->
+                <section id="tab-network" class="tab-view">
+                    <div class="card network-status-card">
+                        <div class="net-status-header">
+                            <div class="connection-state">
+                                <span class="net-status-dot online" id="net-status-dot"></span>
+                                <h3 id="net-status-title">Đang kết nối</h3>
+                            </div>
+                            <span class="net-type-badge" id="net-type">WiFi</span>
+                        </div>
+                        <ul class="info-list compact">
+                            <li><span class="info-label">IPv4 Công cộng:</span> <span class="info-val select-all" id="net-ip">Đang lấy...</span></li>
+                            <li><span class="info-label">Nhà mạng / ISP:</span> <span class="info-val" id="net-isp">Đang xác định...</span></li>
+                            <li><span class="info-label">Độ trễ (Ping):</span> <span class="info-val" id="net-ping">-- ms</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- Speedtest Area -->
+                    <div class="card speedtest-container">
+                        <h3>Đo tốc độ Internet</h3>
+                        
+                        <div class="speedometer-box">
+                            <svg class="speedometer-svg" viewBox="0 0 200 120">
+                                <defs>
+                                    <linearGradient id="speedGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                                        <stop offset="0%" stop-color="#00f0ff"></stop>
+                                        <stop offset="50%" stop-color="#bd00ff"></stop>
+                                        <stop offset="100%" stop-color="#ff0055"></stop>
+                                    </linearGradient>
+                                </defs>
+                                <!-- Outer Gauge Arch -->
+                                <path class="gauge-arc-bg" d="M20,110 A80,80 0 0,1 180,110" fill="none" stroke="#222f54" stroke-width="12" stroke-linecap="round"></path>
+                                <path class="gauge-arc-fill" id="speed-gauge-fill" d="M20,110 A80,80 0 0,1 180,110" fill="none" stroke="url(#speedGrad)" stroke-width="12" stroke-linecap="round" stroke-dasharray="251.2" stroke-dashoffset="251.2"></path>
+                                <!-- Gauge Needle -->
+                                <line class="gauge-needle" id="speed-needle" x1="100" y1="110" x2="20" y2="110" stroke="#ff3b30" stroke-width="4" stroke-linecap="round"></line>
+                                <circle cx="100" cy="110" r="8" fill="#ff3b30"></circle>
+                            </svg>
+                            <div class="speedometer-readings">
+                                <span class="speed-number" id="speed-value">0.0</span>
+                                <span class="speed-unit">Mbps</span>
+                            </div>
+                        </div>
+
+                        <div class="speedtest-results">
+                            <div class="speed-res-box">
+                                <span class="res-lbl">Download</span>
+                                <strong id="speed-download">0.0 Mbps</strong>
+                            </div>
+                            <div class="divider-v"></div>
+                            <div class="speed-res-box">
+                                <span class="res-lbl">Upload</span>
+                                <strong id="speed-upload">0.0 Mbps</strong>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary btn-full" id="btn-start-speedtest" onclick="runSpeedtest()">Bắt đầu đo</button>
+                    </div>
+                </section>
+
+                <!-- TAB 5: BÁO CÁO (REPORT) -->
+                <section id="tab-report" class="tab-view">
+                    <!-- Diagnostic Report card -->
+                    <div class="card report-card-wrapper" id="printable-report">
+                        <div class="report-header">
+                            <div class="logo-area">
+                                <h2>DeviceCare Pro Report</h2>
+                                <p id="report-timestamp">Thời gian: --/--/---- --:--</p>
+                            </div>
+                            <div class="report-health-circle" id="report-health-score-badge">
+                                --%
+                            </div>
+                        </div>
+
+                        <div class="report-section">
+                            <h4>Thông tin máy</h4>
+                            <div class="report-grid">
+                                <div>Hệ điều hành: <strong id="rep-os">--</strong></div>
+                                <div>Màn hình: <strong id="rep-screen">--</strong></div>
+                                <div>Pin: <strong id="rep-battery">--</strong></div>
+                                <div>Tổng RAM: <strong id="rep-ram">--</strong></div>
+                            </div>
+                        </div>
+
+                        <div class="report-section">
+                            <h4>Kết quả kiểm tra phần cứng</h4>
+                            <div class="report-tests-list" id="report-tests-list">
+                                <!-- Dynamically generated test items -->
+                                <div class="empty-tests-msg">Hãy thực hiện ít nhất một bài kiểm tra ở tab "Chẩn đoán".</div>
+                            </div>
+                        </div>
+
+                        <div class="report-section" id="report-recommendations-section">
+                            <h4>Khuyến nghị cải thiện</h4>
+                            <ul class="report-recommendations" id="report-recommendations">
+                                <li>Hoàn thành kiểm tra chẩn đoán để nhận các lời khuyên hữu ích.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="report-actions">
+                        <button class="btn btn-primary btn-full" id="btn-export-pdf" onclick="exportReport()">Xuất báo cáo PDF / In</button>
+                        <button class="btn btn-secondary btn-full" onclick="shareReport()">Chia sẻ kết quả</button>
+                    </div>
+                </section>
+
+            </main>
+
+            <!-- Bottom Navigation Bar -->
+            <nav class="app-nav">
+                <button class="nav-item active" onclick="switchTab('dashboard')">
+                    <span class="nav-icon">📊</span>
+                    <span class="nav-label">Tổng quan</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('resources')">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-label">Tài nguyên</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('diagnostics')">
+                    <span class="nav-icon">🛠️</span>
+                    <span class="nav-label">Chẩn đoán</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('network')">
+                    <span class="nav-icon">🌐</span>
+                    <span class="nav-label">Mạng</span>
+                </button>
+                <button class="nav-item" onclick="switchTab('report')">
+                    <span class="nav-icon">📄</span>
+                    <span class="nav-label">Báo cáo</span>
+                </button>
+            </nav>
+        </div>
+    </div>
+
+    <!-- OVERLAYS FOR DIAGNOSTIC TESTS -->
+    
+    <!-- Screen Test Overlay -->
+    <div class="overlay" id="screen-test-overlay" onclick="nextScreenColor()">
+        <div class="screen-test-content">
+            <span class="overlay-close-btn" onclick="closeScreenTest(event)">❌</span>
+            <div class="test-instruction">Chạm vào màn hình để đổi màu. Tìm các điểm chết có màu lạ.</div>
+        </div>
+    </div>
+
+    <!-- Touch Test Overlay -->
+    <div class="overlay" id="touch-test-overlay">
+        <span class="overlay-close-btn top-right" onclick="closeTouchTest()">Đóng & Lưu</span>
+        <div class="touch-test-instruction">Vuốt ngón tay khắp màn hình để lấp đầy các ô lưới màu xanh.</div>
+        <canvas id="touch-canvas"></canvas>
+    </div>
+
+    <!-- Audio Test Overlay -->
+    <div class="overlay flex-center" id="audio-test-overlay">
+        <div class="modal-card">
+            <h3>Kiểm tra Loa & Âm thanh</h3>
+            <p>Đeo tai nghe hoặc bật loa lớn. Bấm các nút dưới đây để kiểm tra kênh âm thanh trái/phải.</p>
+            
+            <div class="audio-btns">
+                <button class="btn btn-audio-test" onclick="playAudioChannel('left')">🔊 Loa Trái (Left)</button>
+                <button class="btn btn-audio-test" onclick="playAudioChannel('right')">🔊 Loa Phải (Right)</button>
+                <button class="btn btn-audio-test" onclick="playAudioChannel('both')">🔊 Loa Stereo (Cả hai)</button>
+            </div>
+            
+            <div class="audio-status" id="audio-play-status">Sẵn sàng thử âm</div>
+            
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="finishAudioTest(true)">Hoạt động tốt</button>
+                <button class="btn btn-danger" onclick="finishAudioTest(false)">Lỗi âm thanh</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Camera Test Overlay -->
+    <div class="overlay flex-center" id="camera-test-overlay">
+        <div class="modal-card wide-card">
+            <h3>Kiểm tra Camera</h3>
+            <div class="camera-preview-container">
+                <video id="camera-video" autoplay playsinline></video>
+                <div class="camera-fallback" id="camera-fallback-msg">Vui lòng cấp quyền truy cập camera</div>
+            </div>
+            <div class="camera-actions">
+                <button class="btn btn-secondary" onclick="switchCamera()">Đổi Camera</button>
+                <button class="btn btn-primary" onclick="capturePhoto()">Chụp thử</button>
+            </div>
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="finishCameraTest(true)">Camera tốt</button>
+                <button class="btn btn-danger" onclick="finishCameraTest(false)">Camera hỏng/Không bật được</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sensors (Accelerometer) Test Overlay -->
+    <div class="overlay flex-center" id="sensors-test-overlay">
+        <div class="modal-card">
+            <h3>Kiểm tra Cảm biến Gia tốc</h3>
+            <p>Nghiêng điện thoại của bạn để di chuyển bong bóng vào tâm vòng tròn.</p>
+            
+            <div class="sensor-bubble-container">
+                <div class="target-circle"></div>
+                <div class="sensor-bubble" id="sensor-bubble"></div>
+            </div>
+            
+            <div class="sensor-data-readout">
+                <div>X (Nghiêng ngang): <span id="sensor-x">0.00</span></div>
+                <div>Y (Nghiêng dọc): <span id="sensor-y">0.00</span></div>
+                <div>Z: <span id="sensor-z">0.00</span></div>
+            </div>
+
+            <div class="sensor-fallback-warning" id="sensor-fallback">
+                ⚠️ Không nhận được dữ liệu cảm biến (Gia tốc kế thường chỉ khả dụng trên điện thoại thực tế). Chúng tôi đang giả lập chuyển động nhỏ.
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="finishSensorsTest(true)">Cảm biến nhạy</button>
+                <button class="btn btn-danger" onclick="finishSensorsTest(false)">Cảm biến lỗi</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Microphone Test Overlay -->
+    <div class="overlay flex-center" id="mic-test-overlay">
+        <div class="modal-card">
+            <h3>Kiểm tra Microphone</h3>
+            <p>Hãy nói to hoặc thổi vào mic để thanh đo âm lượng hoạt động.</p>
+            
+            <div class="decibel-meter">
+                <div class="decibel-bar" id="decibel-bar" style="width: 0%;"></div>
+                <span class="decibel-val" id="decibel-val">0 dB</span>
+            </div>
+
+            <div class="mic-visualizer-container">
+                <canvas id="mic-visualizer"></canvas>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" onclick="finishMicrophoneTest(true)">Mic rõ nét</button>
+                <button class="btn btn-danger" onclick="finishMicrophoneTest(false)">Mic lỗi/Ồn</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script imports -->
+    <script src="js/battery.js"></script>
+    <script src="js/resources.js"></script>
+    <script src="js/network.js"></script>
+    <script src="js/sensors.js"></script>
+    <script src="js/diagnostics.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
