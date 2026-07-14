@@ -6,6 +6,7 @@ import android.webkit.JavascriptInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.BatteryManager;
+import android.telephony.TelephonyManager;
 import com.getcapacitor.BridgeActivity;
 
 public class MainActivity extends BridgeActivity {
@@ -33,7 +34,7 @@ public class MainActivity extends BridgeActivity {
                 batteryCapacity = 3000; 
             }
 
-            // Xử lý đặc biệt cho các dòng máy pin kép (Dual-cell) như Asus ROG Phone 5 (ASUS_I005DA)
+            // Xử lý đặc biệt cho các dòng máy pin kép (Dual-cell) như Asus ROG Phone 5
             String model = android.os.Build.MODEL;
             String device = android.os.Build.DEVICE;
             
@@ -93,7 +94,6 @@ public class MainActivity extends BridgeActivity {
                 double freeGB = (double) freeBytes / (1024 * 1024 * 1024);
                 double usedGB = (double) usedBytes / (1024 * 1024 * 1024);
 
-                // Chuẩn hóa sang dung lượng ROM thương mại tiêu chuẩn (do phân vùng OS ẩn đi một phần)
                 double officialTotal = 128.0;
                 if (totalGB > 260 && totalGB <= 512) officialTotal = 512.0;
                 else if (totalGB > 130 && totalGB <= 260) officialTotal = 256.0;
@@ -108,6 +108,22 @@ public class MainActivity extends BridgeActivity {
             } catch (Exception e) {
                 return "{\"total\":128.0, \"free\":25.4, \"used\":102.6, \"officialTotal\":128.0}";
             }
+        }
+
+        @JavascriptInterface
+        public String getCarrierName() {
+            try {
+                TelephonyManager manager = (TelephonyManager) getSystemService(TELEPHONY_SERVICE);
+                if (manager != null) {
+                    String carrierName = manager.getNetworkOperatorName();
+                    if (carrierName != null && !carrierName.isEmpty()) {
+                        return carrierName;
+                    }
+                }
+            } catch (Exception e) {
+                // Vô hiệu hóa hoặc thiếu SIM
+            }
+            return "";
         }
     }
 }

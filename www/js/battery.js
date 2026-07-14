@@ -179,9 +179,24 @@ const BatteryMonitor = (() => {
         if (batteryCapacity) batteryCapacity.textContent = capacityVal;
         if (batteryWear) batteryWear.textContent = wearVal;
 
-        // Xác định sức khỏe Pin (Giả lập dựa vào nhiệt độ và mức pin)
+        // Xác định sức khỏe Pin (Giả lập dựa vào nhiệt độ và mức pin, hoặc phồng pin vật lý)
+        const isSwollen = window.HardwareTester && window.HardwareTester.getReportData().swollen === false;
+        
+        if (isSwollen) {
+            wearVal = "NGUY HIỂM (BỊ PHỒNG)";
+            if (batteryWear) {
+                batteryWear.textContent = wearVal;
+                batteryWear.style.color = "var(--accent-red)";
+            }
+        }
+
         if (batteryHealth) {
-            if (mockBattery.temp > 42) {
+            if (isSwollen) {
+                batteryHealth.textContent = "CẦN THAY THẾ GẤP";
+                batteryHealth.style.borderColor = "var(--accent-red)";
+                batteryHealth.style.color = "var(--accent-red)";
+                batteryHealth.style.backgroundColor = "rgba(255, 59, 48, 0.25)";
+            } else if (mockBattery.temp > 42) {
                 batteryHealth.textContent = "Nóng (Cần hạ nhiệt)";
                 batteryHealth.style.borderColor = "var(--accent-red)";
                 batteryHealth.style.color = "var(--accent-red)";

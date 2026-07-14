@@ -11,7 +11,8 @@ const HardwareTester = (() => {
         audio: null,
         mic: null,
         sensors: null,
-        camera: null
+        camera: null,
+        swollen: null  // null: chưa báo, true: Không phồng, false: Bị phồng
     };
 
     // --- 1. MÀN HÌNH (SCREEN COLOR TEST) ---
@@ -651,10 +652,10 @@ const HardwareTester = (() => {
         if (badge) {
             if (isSuccess) {
                 badge.className = "test-status-badge status-pass";
-                badge.textContent = "Đạt";
+                badge.textContent = (testId === 'swollen') ? "Không phồng" : "Đạt";
             } else {
                 badge.className = "test-status-badge status-fail";
-                badge.textContent = "Lỗi";
+                badge.textContent = (testId === 'swollen') ? "BỊ PHỒNG" : "Lỗi";
             }
         }
         
@@ -686,6 +687,31 @@ const HardwareTester = (() => {
         vibratePhone(100);
     }
 
+    function startSwollenBatteryCheck() {
+        vibratePhone(50);
+        
+        const isSwollen = confirm(
+            "XÁC NHẬN PIN VẬT LÝ:\n\n" +
+            "Phần mềm không thể tự phát hiện độ phồng pin. Hãy quan sát ngoại quan máy:\n" +
+            "- Mặt lưng có bị cong, gồ lên không?\n" +
+            "- Màn hình có bị ép cong, loang mực hoặc hở viền không?\n" +
+            "- Có khe hở lớn xuất hiện ở nắp lưng không?\n\n" +
+            "-> Bấm OK nếu máy BỊ PHỒNG PIN.\n" +
+            "-> Bấm CANCEL nếu máy BÌNH THƯỜNG."
+        );
+
+        if (isSwollen) {
+            alert(
+                "⚠️ CẢNH BÁO NGUY HIỂM CHÁY NỔ!\n\n" +
+                "Pin máy đang bị phồng. Đây là hiện tượng nguy hiểm có nguy cơ cháy nổ cao.\n\n" +
+                "Khuyên dùng: Bạn hãy lập tức ngừng sạc pin, hạn chế sử dụng điện thoại và mang máy đi thay pin sớm nhất có thể!"
+            );
+            markTest('swollen', false);
+        } else {
+            markTest('swollen', true);
+        }
+    }
+
     // Trả về báo cáo
     function getTestsReportData() {
         return testResults;
@@ -714,6 +740,7 @@ const HardwareTester = (() => {
         startMicrophoneTest,
         finishMicrophoneTest,
 
+        startSwollenBatteryCheck,
         resetAllTests,
         getReportData: getTestsReportData
     };
@@ -737,4 +764,5 @@ window.startSensorsTest = HardwareTester.startSensorsTest;
 window.finishSensorsTest = HardwareTester.finishSensorsTest;
 window.startMicrophoneTest = HardwareTester.startMicrophoneTest;
 window.finishMicrophoneTest = HardwareTester.finishMicrophoneTest;
+window.startSwollenBatteryCheck = HardwareTester.startSwollenBatteryCheck;
 window.resetAllTests = HardwareTester.resetAllTests;

@@ -263,6 +263,16 @@
                         </div>
                     </div>
 
+                    <!-- Physical Battery Swelling Check -->
+                    <div class="card warning-alert hover-scale" id="swollen-battery-check" onclick="startSwollenBatteryCheck()" style="margin-top: 12px; margin-bottom: 6px; cursor: pointer; background: rgba(255, 94, 0, 0.08); border-color: rgba(255, 94, 0, 0.2);">
+                        <div class="warning-icon">🔋</div>
+                        <div class="warning-body" style="flex-grow: 1;">
+                            <h4 style="color: var(--accent-orange);">Xác nhận độ phồng Pin vật lý</h4>
+                            <p style="font-size: 10px;">Phần mềm không thể tự phát hiện phồng pin. Hãy xác nhận tình trạng bằng mắt thường.</p>
+                        </div>
+                        <span class="test-status-badge status-pending" id="status-swollen" style="margin-left: 10px; flex-shrink: 0;">Chưa báo</span>
+                    </div>
+
                     <!-- Reset Tests -->
                     <button class="btn btn-secondary btn-full" onclick="resetAllTests()">Đặt lại toàn bộ bài test</button>
                 </section>

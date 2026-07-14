@@ -12,7 +12,8 @@ const DiagnosticsReport = (() => {
         audio: "Loa & Âm thanh",
         mic: "Microphone",
         sensors: "Cảm biến gia tốc",
-        camera: "Máy ảnh (Camera)"
+        camera: "Máy ảnh (Camera)",
+        swollen: "Độ phồng Pin vật lý"
     };
 
     // Tính toán lại điểm số sức khỏe thiết bị dựa vào kết quả test
@@ -50,10 +51,18 @@ const DiagnosticsReport = (() => {
         let score = 100 - (failCount * 15) - (pendingCount * 3);
         score = Math.max(20, Math.min(100, score));
 
+        // NẾU PIN BỊ PHỒNG, cưỡng ép điểm số xuống mức tối thiểu (20) vì đây là lỗi vật lý cực kỳ nguy hiểm
+        if (results.swollen === false) {
+            score = 20;
+        }
+
         let statusText = "Hoàn hảo";
         let descText = "Tất cả các bài kiểm tra đã thực hiện đều đạt kết quả xuất sắc. Điện thoại của bạn đang trong tình trạng rất tốt!";
 
-        if (score < 60) {
+        if (results.swollen === false) {
+            statusText = "NGUY HIỂM (Pin phồng)";
+            descText = "⚠️ CẢNH BÁO NGUY HIỂM: Phát hiện pin bị phồng gồ lên dưới mặt lưng. Hãy lập tức dừng sạc, hạn chế sử dụng máy và mang đi thay pin ngay để tránh nguy cơ cháy nổ!";
+        } else if (score < 60) {
             statusText = "Kém (Cần sửa chữa)";
             descText = "Phát hiện nhiều lỗi phần cứng nghiêm trọng. Đề xuất mang máy đến trung tâm bảo hành gần nhất để kiểm tra.";
         } else if (score < 85) {
@@ -164,6 +173,9 @@ const DiagnosticsReport = (() => {
         const results = HardwareTester.getReportData();
 
         // Kiểm tra các lỗi phần cứng trước
+        if (results.swollen === false) {
+            tips.push("⚠️ NGUY HIỂM: Pin máy của bạn bị phồng gồ lên. Hãy lập tức ngắt sạc, tắt nguồn/hạn chế sử dụng và đem máy đi thay pin sớm để tránh cháy nổ!");
+        }
         if (results.screen === false) {
             tips.push("Màn hình phát hiện lỗi màu hoặc điểm chết. Tránh để màn hình ở độ sáng tối đa quá lâu để giảm thiểu loang mực.");
         }

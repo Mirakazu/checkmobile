@@ -121,6 +121,20 @@ const NetworkMonitor = (() => {
         const ispVal = document.getElementById('net-isp');
         const pingVal = document.getElementById('net-ping');
         
+        // Kiểm tra xem có nhà mạng từ SIM của native Android không
+        let nativeCarrier = "";
+        if (window.AndroidNative && typeof window.AndroidNative.getCarrierName === 'function') {
+            try {
+                nativeCarrier = window.AndroidNative.getCarrierName();
+            } catch (err) {
+                console.error("Lỗi khi đọc tên nhà mạng:", err);
+            }
+        }
+        
+        if (nativeCarrier && nativeCarrier.trim() !== "") {
+            networkInfo.isp = nativeCarrier;
+        }
+
         if (ipVal) ipVal.textContent = networkInfo.ip;
         if (ispVal) ispVal.textContent = networkInfo.isp;
         if (pingVal) pingVal.textContent = `${networkInfo.ping} ms`;
