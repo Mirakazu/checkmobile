@@ -279,3 +279,4 @@ const NetworkMonitor = (() => {
 
 // Đăng ký toàn cục
 window.NetworkMonitor = NetworkMonitor;
+window.runSpeedtest = NetworkMonitor.runSpeedtest;

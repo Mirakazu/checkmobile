@@ -156,6 +156,29 @@ const BatteryMonitor = (() => {
             batteryVoltage.textContent = `${mockBattery.voltage.toFixed(2)} V`;
         }
 
+        // Cập nhật Dung lượng & Độ chai Pin (Sử dụng Native Bridge nếu trên APK)
+        const batteryCapacity = document.getElementById('battery-capacity');
+        const batteryWear = document.getElementById('battery-wear');
+        
+        let capacityVal = "6000 mAh";
+        let wearVal = "96% (Tốt)";
+
+        if (window.AndroidNative) {
+            try {
+                if (typeof window.AndroidNative.getBatteryCapacity === 'function') {
+                    capacityVal = window.AndroidNative.getBatteryCapacity();
+                }
+                if (typeof window.AndroidNative.getBatteryHealth === 'function') {
+                    wearVal = window.AndroidNative.getBatteryHealth();
+                }
+            } catch (err) {
+                console.error("Lỗi khi gọi AndroidNative:", err);
+            }
+        }
+
+        if (batteryCapacity) batteryCapacity.textContent = capacityVal;
+        if (batteryWear) batteryWear.textContent = wearVal;
+
         // Xác định sức khỏe Pin (Giả lập dựa vào nhiệt độ và mức pin)
         if (batteryHealth) {
             if (mockBattery.temp > 42) {
